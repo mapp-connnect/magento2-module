@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="mappconnect" translate="label" sortOrder="5000">
+            <label>Mapp Connect</label>
+        </tab>
+        <section id="mappconnect" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Settings</label>
+            <tab>mappconnect</tab>
+            <resource>Mapp_Connect::settings</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General Configuration</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Module Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="base_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Mapp Connect API URL</label>
+                    <comment>URL to Mapp Connect API</comment>
+                </field>
+            </group>
+            <group id="integration" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Integration Configuration</label>
+                <field id="integration_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Integration Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="integration_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Integration ID</label>
+                    <comment>Integration ID generated in Mapp Engage.</comment>
+                </field>
+                <field id="integration_secret" translate="label" type="password" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Integration Secret</label>
+                    <comment>Integration Secret generated in Mapp Engage.</comment>
+                    <backend_model>Mapp\Connect\Model\Config\Backend\Authentication</backend_model>
+                </field>
+            </group>
+            <group id="export" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Synchronization configuration</label>
+                <field id="customer_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer Synchronization</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="transaction_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Transaction Synchronization</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="newsletter_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Newsletter Synchronization</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="group" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+              <label>Mapp Engage Group configuration</label>
+              <field id="customers" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                  <label>Customers Group</label>
+                  <source_model>Mapp\Connect\Model\Config\Backend\Group</source_model>
+              </field>
+              <field id="subscribers" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                  <label>Subscribers Group</label>
+                  <source_model>Mapp\Connect\Model\Config\Backend\Group</source_model>
+              </field>
+              <field id="guests" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                  <label>Guests Group</label>
+                  <source_model>Mapp\Connect\Model\Config\Backend\Group</source_model>
+              </field>
+            </group>
+        </section>
+
+
+        <section id="mappconnect_messages" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Messages</label>
+            <tab>mappconnect</tab>
+            <resource>Mapp_Connect::messages</resource>
+
+            <group id="order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Order</label>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Order Confirmation Template</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="guest_template" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Order Confirmation Template for Guest</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+            </group>
+            <group id="order_comment" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Order Comments</label>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Order Comment Email Template</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="guest_template" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Order Comment Email Template for Guest</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+            </group>
+            <group id="invoice" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Invoice</label>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Invoice Email Template</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="guest_template" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Invoice Email Template for Guest</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+            </group>
+            <group id="invoice_comment" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Invoice Comments</label>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Invoice Comment Email Template</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="guest_template" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Invoice Comment Email Template for Guest</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+            </group>
+            <group id="shipment" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Shipment</label>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Shipment Email Template</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="guest_template" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Shipment Email Template for Guest</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+            </group>
+            <group id="shipment_comment" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Shipment Comments</label>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Shipment Comment Email Template</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="guest_template" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Shipment Comment Email Template for Guest</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+            </group>
+            <group id="creditmemo" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Credit Memo</label>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Credit Memo Email Template</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="guest_template" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Credit Memo Email Template for Guest</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+            </group>
+            <group id="creditmemo_comment" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Credit Memo Comments</label>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Credit Memo Comment Email Template</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="guest_template" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Credit Memo Comment Email Template for Guest</label>
+                    <comment>Mapp Engage Email Template or Magento default mail transport</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+            </group>
+
+            <group id="create_account" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Create New Account Emails</label>
+                <field id="email_template" translate="label comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default Welcome Email</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="email_no_password_template" translate="label comment" type="select" sortOrder="75" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default Welcome Email Without Password</label>
+                    <comment><![CDATA[
+                        This email will be sent instead of the Default Welcome Email, if a customer was created without password. <br /><br />
+                        Email template chosen based on theme fallback when "Default" option is selected.
+                    ]]></comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="email_confirmation_template" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Confirmation Link Email</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="email_confirmed_template" translate="label comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Welcome Email</label>
+                    <comment><![CDATA[
+                        This email will be sent instead of the Default Welcome Email, after account confirmation. <br /><br />
+                        Email template chosen based on theme fallback when "Default" option is selected.
+                    ]]></comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+            </group>
+            <group id="password" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Password Emails</label>
+                <field id="forgot_email_template" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Forgot Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="remind_email_template" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Remind Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                </field>
+                <field id="reset_password_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                     <label>Reset Password Template</label>
+                     <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                     <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                 </field>
+               </group>
+                <group id="account_information" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+                     <label>Account Information Options</label>
+                     <field id="change_email_template" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                         <label>Change Email Template</label>
+                         <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                         <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                     </field>
+                     <field id="change_email_and_password_template" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                         <label>Change Email and Password Template</label>
+                         <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                         <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                     </field>
+                 </group>
+                 <group id="sendfriend" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                     <label>Email to a Friend</label>
+                     <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                         <label>Select Email Template</label>
+                         <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                         <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                    </field>
+                </group>
+
+                <group id="productalert" translate="label" type="text" sortOrder="250" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Alerts</label>
+                    <field id="email_price_template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Price Alert Email Template</label>
+                        <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                        <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                    </field>
+                    <field id="email_stock_template" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Stock Alert Email Template</label>
+                        <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                        <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                    </field>
+                  </group>
+                  <group id="wishlist" translate="label" type="text" sortOrder="250" showInDefault="1" showInWebsite="1" showInStore="1">
+                      <label>Wish List</label>
+                      <field id="email_template" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                          <label>Email Template</label>
+                          <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                          <source_model>Mapp\Connect\Model\Config\Backend\Template</source_model>
+                      </field>
+                  </group>
+        </section>
+
+    </system>
+</config>

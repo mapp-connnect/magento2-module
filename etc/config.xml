@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <mappconnect>
+            <general>
+                <enable>0</enable>
+                <base_url>https://connect.mapp.com/api/v1.0/</base_url>
+            </general>
+            <export>
+              <customer_enable>1</customer_enable>
+              <transaction_enable>1</transaction_enable>
+              <newsletter_enable>1</newsletter_enable>
+            </export>
+        </mappconnect>
+    </default>
+</config>
