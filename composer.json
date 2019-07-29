@@ -1,5 +1,5 @@
 {
-    "name": "mapp/connect-magento2-module",
+    "name": "mappconnect/magento2-module",
     "description": "Mapp Connect integration for Magento 2",
     "require": {
         "php": "~7.1.3||~7.2.0|~7.0",
