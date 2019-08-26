@@ -12,12 +12,16 @@ class CustomerUpdate implements ObserverInterface {
 
   protected $_helper;
 
+  protected $logger;
+
   public function __construct(
       \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-      \Mapp\Connect\Helper\Data  	$helper
+      \Mapp\Connect\Helper\Data  	$helper,
+      \Psr\Log\LoggerInterface $logger
   ) {
     $this->scopeConfig = $scopeConfig;
     $this->_helper = $helper;
+    $this->logger = $logger;
   }
 
   public function execute(\Magento\Framework\Event\Observer $observer) {
@@ -30,7 +34,11 @@ class CustomerUpdate implements ObserverInterface {
         $data['group'] = $this->_helper->getConfigValue('group', 'customers');
         $data['subscribe'] = true;
 
-        $mappconnect->event('user', $data);
+        try {
+          $mappconnect->event('user', $data);
+        } catch(\Exception $e) {
+          $this->logger->error('MappConnect: cannot sync customer', ['exception' => $e]);
+        }
     }
   }
 }

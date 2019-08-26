@@ -4,28 +4,34 @@ namespace Mapp\Connect\Plugin;
 class SubscriberPlugin {
 
     protected $scopeConfig;
+    protected $helper;
+    protected $logger;
 
     public function __construct(
       \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-      \Mapp\Connect\Helper\Data  	$helper
+      \Mapp\Connect\Helper\Data $helper,
+      \Psr\Log\LoggerInterface $logger
     ) {
       $this->scopeConfig = $scopeConfig;
       $this->_helper = $helper;
+      $this->logger = $logger;
     }
 
     public function aroundSubscribe($subject, \Closure $proceed, $email) {
 
         $result = $proceed($email);
 
-        if (($mappconnect = $this->_helper->getMappConnectClient())
-         && $this->_helper->getConfigValue('export', 'newsletter_enable')) {
-          $mappconnect->event('newsletter', [
-            'email' => $email,
-            'group' => $this->_helper->getConfigValue('group', 'subscribers'),
-            'subscribe' => true
-          ]);
+        try {
+          if (($mappconnect = $this->_helper->getMappConnectClient())
+           && $this->_helper->getConfigValue('export', 'newsletter_enable')) {
+            $mappconnect->event('newsletter', [
+              'email' => $email,
+              'group' => $this->_helper->getConfigValue('group', 'subscribers')
+            ]);
+          }
+        } catch(\Exception $e) {
+          $this->logger->error('MappConnect: cannot sync subscribe event', ['exception' => $e]);
         }
-
         return $result;
     }
 
@@ -34,13 +40,17 @@ class SubscriberPlugin {
         $email = $subject->getEmail();
         $result = $proceed($email);
 
-        if (($mappconnect = $this->_helper->getMappConnectClient())
-         && $this->_helper->getConfigValue('export', 'newsletter_enable')) {
-          $mappconnect->event('newsletter', [
-            'email' => $email,
-            'group' => $this->_helper->getConfigValue('group', 'subscribers'),
-            'subscribe' => false
-          ]);
+        try {
+          if (($mappconnect = $this->_helper->getMappConnectClient())
+           && $this->_helper->getConfigValue('export', 'newsletter_enable')) {
+            $mappconnect->event('newsletter', [
+              'email' => $email,
+              'group' => $this->_helper->getConfigValue('group', 'subscribers'),
+              'unsubscribe' => true
+            ]);
+          }
+        } catch(\Exception $e) {
+          $this->logger->error('MappConnect: cannot sync unsubscribe event', ['exception' => $e]);
         }
 
         return $result;

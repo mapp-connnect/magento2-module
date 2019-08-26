@@ -13,19 +13,22 @@ class OrderRepositoryInterfacePlugin {
   protected $productHelper;
   protected $addressConfig;
   protected $paymentHelper;
+  protected $logger;
 
   public function __construct(
     \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
     \Mapp\Connect\Helper\Data  	$helper,
     \Magento\Catalog\Helper\Product $productHelper,
     \Magento\Customer\Model\Address\Config $addressConfig,
-    \Magento\Payment\Helper\Data $paymentHelper
+    \Magento\Payment\Helper\Data $paymentHelper,
+    \Psr\Log\LoggerInterface $logger
   ) {
     $this->scopeConfig = $scopeConfig;
     $this->_helper = $helper;
     $this->productHelper = $productHelper;
     $this->addressConfig = $addressConfig;
     $this->paymentHelper = $paymentHelper;
+    $this->logger = $logger;
   }
 
   protected function getSelectedOptions($item) {
@@ -81,8 +84,12 @@ class OrderRepositoryInterfacePlugin {
              $data['store_id']
           );
 
-          if ($mc = $this->_helper->getMappConnectClient()) {
-            $mc->event('transaction', $data);
+          try {
+            if ($mc = $this->_helper->getMappConnectClient()) {
+              $mc->event('transaction', $data);
+            }
+          } catch(\Exception $e) {
+            $this->logger->error('MappConnect: cannot sync transaction event', ['exception' => $e]);
           }
       }
       return $order;
