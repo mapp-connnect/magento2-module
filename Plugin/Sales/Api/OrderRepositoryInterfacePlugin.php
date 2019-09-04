@@ -84,6 +84,12 @@ class OrderRepositoryInterfacePlugin {
              $data['store_id']
           );
 
+          if (isset($data['customer_is_guest'])
+              && $data['customer_is_guest']
+              && $this->_helper->getConfigValue('group', 'guests')) {
+            $data['group'] = $this->_helper->getConfigValue('group', 'guests');
+          }
+
           try {
             if ($mc = $this->_helper->getMappConnectClient()) {
               $mc->event('transaction', $data);
