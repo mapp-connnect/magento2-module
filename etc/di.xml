@@ -1,26 +1,8 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-  <!-- For Magento < 2.2 -->
-	<!--
-  <preference for="\Magento\Framework\Mail\Transport" type="Mapp\Connect\Framework\Mail\Transport"/>
-	<type name="Mapp\Connect\Framework\Mail\Transport">
-		<plugin sortOrder="100" name="MappConnectTransport" type="Mapp\Connect\Plugin\Mail\TransportPlugin"/>
-	</type>
-  -->
-	<!-- For Magento Eq 2.2 -->
-  <!--
-	<type name="\Magento\Framework\Mail\TransportInterface">
-		<plugin sortOrder="100" name="MappConnectTransportInterface" type="Mapp\Connect\Plugin\Mail\TransportPlugin"/>
-	</type>
-  -->
-
 	<type name="Magento\Framework\Mail\Template\TransportBuilder">
 		<plugin sortOrder="1" name="MappConnectTransportBuilder" type="Mapp\Connect\Plugin\Mail\TransportBuilderPlugin"/>
 	</type>
-
-  <type name="Magento\Framework\Mail\Template\TransportBuilderByStore">
-    <plugin sortOrder="1" name="MappConnectTransportBuilderByStore" type="Mapp\Connect\Plugin\Mail\TransportBuilderByStorePlugin"/>
-  </type>
 
   <type name="Magento\Newsletter\Model\Subscriber">
       <plugin name="MappConnectNewsletterSubscriber" type="Mapp\Connect\Plugin\SubscriberPlugin"/>
