@@ -19,9 +19,14 @@
     public function sendMessage() {
       foreach ($this->parameters['to'] as $to) {
         $data = $this->parameters['params'];
-        $data['messageId'] = $this->messageId;
+        $data['messageId'] = strval($this->messageId);
         $data['email'] = $to;
-        $this->mappconnect->event('email', $data);  
+
+        try {
+          $this->mappconnect->event('email', $data);
+        } catch(\Exception $e) {
+          $this->logger->error('MappConnect: cannot sent email event', ['exception' => $e]);
+        }
       }
     }
 

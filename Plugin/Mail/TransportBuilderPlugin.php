@@ -30,6 +30,14 @@ class TransportBuilderPlugin {
     }
 
     public function aroundGetTransport(\Magento\Framework\Mail\Template\TransportBuilder $subject, \Closure $proceed) {
+      if ($this->dataHelper->getConfigValue('export', 'transaction_enable')
+        && in_array($this->parameters['identifier'], [
+            "sales_email_order_template",
+            "sales_email_order_guest_template"
+          ])) {
+            return $proceed();
+      }
+
       if (($mappconnect = $this->dataHelper->getMappConnectClient())
         && ($messageId = $this->dataHelper->templateIdToConfig($this->parameters['identifier']))) {
 
