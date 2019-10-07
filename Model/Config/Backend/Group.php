@@ -24,6 +24,8 @@ class Group implements \Magento\Framework\Option\ArrayInterface {
     try {
       if ($mc = $this->_helper->getMappConnectClient()) {
         self::$cache = $mc->getGroups();
+      } else {
+        return array();
       }
     } catch (\Exception $e) {
       $this->_messageManager->addExceptionMessage($e);

@@ -22,7 +22,11 @@ class Template implements \Magento\Framework\Option\ArrayInterface {
       return self::$cache;
     }
     try {
-      self::$cache = $this->_helper->getMappConnectClient()->getMessages();
+      if ($mc = $this->_helper->getMappConnectClient()) {
+        self::$cache = $mc->getMessages();
+      } else {
+        return array();
+      }
     } catch (\Exception $e) {
       $this->_messageManager->addExceptionMessage($e);
       self::$cache = array();
