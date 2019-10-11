@@ -94,7 +94,7 @@ class OrderRepositoryInterfacePlugin {
           }
 
           if ($messageId) {
-            $data['messageId'] = $messageId;
+            $data['messageId'] = strval($messageId);
           }
 
           try {
