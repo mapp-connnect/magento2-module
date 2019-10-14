@@ -30,8 +30,18 @@ class TransportBuilderPlugin {
     }
 
     public function aroundGetTransport(\Magento\Framework\Mail\Template\TransportBuilder $subject, \Closure $proceed) {
-      if (($mappconnect = $this->dataHelper->getMappConnectClient())
-        && ($messageId = $this->dataHelper->templateIdToConfig($this->parameters['identifier']))) {
+      if ($mappconnect = $this->dataHelper->getMappConnectClient()) {
+
+        if ($this->dataHelper->getConfigValue('export', 'newsletter_enable')
+          && in_array($this->parameters['identifier'], [
+              "newsletter_subscription_confirm_email_template",
+              "newsletter_subscription_success_email_template",
+              "newsletter_subscription_un_email_template"
+            ])) {
+              return new \Mapp\Connect\Framework\Mail\Transport($mappconnect, 0, []);
+        }
+
+        if ($messageId = $this->dataHelper->templateIdToConfig($this->parameters['identifier'])) {
 
           if ($this->dataHelper->getConfigValue('export', 'transaction_enable')
             && in_array($this->parameters['identifier'], [
@@ -59,6 +69,7 @@ class TransportBuilderPlugin {
           }
 
           return new \Mapp\Connect\Framework\Mail\Transport($mappconnect, $messageId, $params);
+        }
       }
       $returnValue = $proceed();
       return $returnValue;
