@@ -10,7 +10,7 @@
       "magento/module-webapi": "102.1"
     },
     "type": "magento2-module",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "license": [ "MIT" ],
     "minimum-stability": "dev",
     "autoload": {

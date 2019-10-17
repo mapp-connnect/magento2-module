@@ -25,15 +25,14 @@ class CustomerUpdate implements ObserverInterface {
   }
 
   public function execute(\Magento\Framework\Event\Observer $observer) {
-
+    $this->logger->debug('MappConnect: Customer execute');
     if (($mappconnect = $this->_helper->getMappConnectClient())
       && $this->_helper->getConfigValue('export', 'customer_enable')) {
-
         $customer = $observer->getCustomerDataObject();
         $data = $customer->__toArray();
         $data['group'] = $this->_helper->getConfigValue('group', 'customers');
         $data['subscribe'] = true;
-
+        $this->logger->debug('MappConnect: sending Customer', ['data' => $data]);
         try {
           $mappconnect->event('user', $data);
         } catch(\Exception $e) {
