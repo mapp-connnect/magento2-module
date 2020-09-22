@@ -10,15 +10,18 @@ class Data extends AbstractHelper {
 
   protected $_config;
   protected $_value;
+  protected $_request;
 
   const CONFIG_PREFIX = 'mappconnect';
 
   public function __construct(
-     	\Magento\Framework\App\Config\ScopeConfigInterface  	$config,
-      \Magento\Framework\App\Config\Value $value
+      \Magento\Framework\App\Request\Http $request,
+      \Magento\Framework\App\Config\ScopeConfigInterface $config,
+	    \Magento\Framework\App\State $state
   ) {
+    $this->_request = $request;
     $this->_config = $config;
-    $this->_value = $value;
+    $this->_state = $state;
   }
 
   function getMappConnectClient() {
@@ -35,13 +38,17 @@ class Data extends AbstractHelper {
   }
 
   function getConfigValue(string $group, string $field) {
-      if ($this->_value->getData("groups/$group/fields/$field/value"))
-          return (string)$this->_value->getData("groups/$group/fields/$field/value");
 
-      return (string)$this->_config->getValue(self::CONFIG_PREFIX . "/" . $group . "/" . $field,
-         $this->_value->getScope() ?: \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-         $this->_value->getScopeCode()
-      );
+	  if ($this->_state->getAreaCode() === \Magento\Framework\App\Area::AREA_ADMINHTML) {
+		  if ($storeId = $this->_request->getParam("store"))
+			  return (string)$this->_config->getValue(self::CONFIG_PREFIX . "/" . $group . "/" . $field,\Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId);
+		  if ($websiteId = $this->_request->getParam("website"))
+			  return (string)$this->_config->getValue(self::CONFIG_PREFIX . "/" . $group . "/" . $field,\Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE, $websiteId);
+
+	  }
+
+	  return (string)$this->_config->getValue(self::CONFIG_PREFIX . "/" . $group . "/" . $field,\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
   }
 
   function templateIdToConfig($templeteId) {
@@ -82,10 +89,14 @@ class Data extends AbstractHelper {
     if (!array_key_exists($templeteId, $map))
       return 0;
 
-    return (int)$this->_config->getValue($map[$templeteId],
-       $this->_value->getScope() ?: \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-       $this->_value->getScopeCode()
-    );
+    if ($this->_state->getAreaCode() === \Magento\Framework\App\Area::AREA_ADMINHTML) {
+      if ($storeId = $this->_request->getParam("store"))
+        return (string)$this->_config->getValue($map[$templeteId],\Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId);
+      if ($websiteId = $this->_request->getParam("website"))
+        return (string)$this->_config->getValue($map[$templeteId],\Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE, $websiteId);
+	  }
+
+    return (int)$this->_config->getValue($map[$templeteId], \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
   }
 
 }
