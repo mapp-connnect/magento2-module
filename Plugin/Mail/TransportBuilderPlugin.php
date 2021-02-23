@@ -20,13 +20,7 @@ class TransportBuilderPlugin {
     ) {
       $this->dataHelper = $dataHelper;
       $this->templateFactory = $templateFactory;
-      $this->parameters = [
-        'options' => null,
-        'identifier' => null,
-        'model' => null,
-        'vars' => null,
-        'to' => []
-      ];
+      $this->reset();
     }
 
     public function aroundGetTransport(\Magento\Framework\Mail\Template\TransportBuilder $subject, \Closure $proceed) {
@@ -38,7 +32,9 @@ class TransportBuilderPlugin {
               "newsletter_subscription_success_email_template",
               "newsletter_subscription_un_email_template"
             ])) {
-              return new \Mapp\Connect\Framework\Mail\Transport($mappconnect, 0, []);
+              $result = new \Mapp\Connect\Framework\Mail\Transport($mappconnect, 0, []);
+              $this->reset();
+              return $result;
         }
 
         if ($messageId = $this->dataHelper->templateIdToConfig($this->parameters['identifier'])) {
@@ -68,10 +64,14 @@ class TransportBuilderPlugin {
             $params['params'][$label] = $filer->filter($v['value']);
           }
 
-          return new \Mapp\Connect\Framework\Mail\Transport($mappconnect, $messageId, $params);
+          $result = new \Mapp\Connect\Framework\Mail\Transport($mappconnect, $messageId, $params);
+          $this->reset();
+          return $result;
+
         }
       }
       $returnValue = $proceed();
+      $this->reset();
       return $returnValue;
     }
 
@@ -98,6 +98,16 @@ class TransportBuilderPlugin {
     public function beforeSetTemplateVars(\Magento\Framework\Mail\Template\TransportBuilder $subject, $templateVars) {
         $this->parameters['vars'] = $templateVars;
         return null;
+    }
+
+    protected function reset() {
+        $this->parameters = [
+          'options' => null,
+          'identifier' => null,
+          'model' => null,
+          'vars' => null,
+          'to' => []
+        ];
     }
 
 }
