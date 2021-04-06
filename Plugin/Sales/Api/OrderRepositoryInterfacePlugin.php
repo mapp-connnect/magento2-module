@@ -21,6 +21,7 @@ class OrderRepositoryInterfacePlugin {
     \Magento\Catalog\Helper\Product $productHelper,
     \Magento\Customer\Model\Address\Config $addressConfig,
     \Magento\Payment\Helper\Data $paymentHelper,
+    \Magento\Framework\Session\StorageInterface $storage,
     \Psr\Log\LoggerInterface $logger
   ) {
     $this->scopeConfig = $scopeConfig;
@@ -28,6 +29,7 @@ class OrderRepositoryInterfacePlugin {
     $this->productHelper = $productHelper;
     $this->addressConfig = $addressConfig;
     $this->paymentHelper = $paymentHelper;
+    $this->storage = $storage;
     $this->logger = $logger;
   }
 
@@ -53,7 +55,8 @@ class OrderRepositoryInterfacePlugin {
   }
 
   public function afterSave(OrderRepositoryInterface $subject, OrderInterface $order): OrderInterface {
-      if ($this->_helper->getConfigValue('export', 'transaction_enable')) {
+      $transaction_key = 'mappconnect_transaction_'.$order->getId();
+      if ($this->_helper->getConfigValue('export', 'transaction_enable') && ($this->storage->getData($transaction_key) != true)) {
           $data = $order->getData();
           $data['items'] = array();
           unset($data['status_histories'], $data['extension_attributes'], $data['addresses'], $data['payment']);
@@ -100,6 +103,7 @@ class OrderRepositoryInterfacePlugin {
           try {
             if ($mc = $this->_helper->getMappConnectClient()) {
               $mc->event('transaction', $data);
+              $this->storage->setData($transaction_key, true);
             }
           } catch(\Exception $e) {
             $this->logger->error('MappConnect: cannot sync transaction event', ['exception' => $e]);
