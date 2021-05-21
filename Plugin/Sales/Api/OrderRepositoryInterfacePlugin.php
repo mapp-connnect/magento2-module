@@ -89,11 +89,10 @@ class OrderRepositoryInterfacePlugin {
 
           $messageId = $this->_helper->templateIdToConfig("sales_email_order_template");
 
-          if (isset($data['customer_is_guest'])
-              && $data['customer_is_guest']
-              && $this->_helper->getConfigValue('group', 'guests')) {
-            $data['group'] = $this->_helper->getConfigValue('group', 'guests');
+          if (isset($data['customer_is_guest']) && $data['customer_is_guest']) {
             $messageId = $this->_helper->templateIdToConfig("sales_email_order_guest_template");
+            if ($this->_helper->getConfigValue('group', 'guests'))
+              $data['group'] = $this->_helper->getConfigValue('group', 'guests');
           }
 
           if ($messageId) {
