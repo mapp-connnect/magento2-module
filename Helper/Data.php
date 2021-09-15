@@ -24,11 +24,18 @@ class Data extends AbstractHelper {
     $this->_state = $state;
   }
 
+  function getBaseURL() {
+    $url = $this->getConfigValue('general', 'base_url');
+    if ($url == 'custom')
+      $url = $this->getConfigValue('general', 'base_url_custom');
+    return $url;
+  }
+
   function getMappConnectClient() {
     if (is_null($this->client)) {
       if ($this->getConfigValue('integration', 'integration_enable')) {
         $this->client = new \Mapp\Connect\Client(
-          $this->getConfigValue('general', 'base_url'),
+          $this->getBaseURL(),
           $this->getConfigValue('integration', 'integration_id'),
           $this->getConfigValue('integration', 'integration_secret')
         );

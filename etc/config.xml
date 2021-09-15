@@ -4,7 +4,6 @@
         <mappconnect>
             <general>
                 <enable>0</enable>
-                <base_url>https://connect.mapp.com/api/v1.0/</base_url>
             </general>
             <export>
               <customer_enable>1</customer_enable>

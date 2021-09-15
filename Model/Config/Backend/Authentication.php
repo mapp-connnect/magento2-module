@@ -25,8 +25,12 @@ class Authentication extends \Magento\Framework\App\Config\Value {
     public function beforeSave() {
 
         if ($this->getConfigValue('integration', 'integration_enable')) {
+            $url = $this->getConfigValue('general', 'base_url');
+            if ($url == 'custom')
+                $url = $this->getConfigValue('general', 'base_url_custom');
+
             $mc = new \Mapp\Connect\Client(
-                $this->getConfigValue('general', 'base_url'),
+                $url,
                 $this->getConfigValue('integration', 'integration_id'),
                 $this->getConfigValue('integration', 'integration_secret')
             );
