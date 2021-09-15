@@ -29,6 +29,9 @@ class SubscriberPlugin {
                'email' => $email,
                'group' => $this->_helper->getConfigValue('group', 'subscribers')
              ];
+             if ($this->_helper->getConfigValue('export', 'newsletter_doubleoptin')) {
+               $data['doubleOptIn'] = true;
+             }
              $this->logger->debug('MappConnect: sending newsletter', ['data' => $data]);
              $mappconnect->event('newsletter', $data);
           }
@@ -73,6 +76,9 @@ class SubscriberPlugin {
                'email' => $email,
                'group' => $this->_helper->getConfigValue('group', 'subscribers')
              ];
+             if ($this->_helper->getConfigValue('export', 'newsletter_doubleoptin')) {
+               $data['doubleOptIn'] = true;
+             }
              $this->logger->debug('MappConnect: sending newsletter', ['data' => $data]);
              $mappconnect->event('newsletter', $data);
           }
