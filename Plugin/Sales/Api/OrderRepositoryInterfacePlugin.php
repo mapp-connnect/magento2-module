@@ -56,6 +56,10 @@ class OrderRepositoryInterfacePlugin {
 
   public function afterSave(OrderRepositoryInterface $subject, OrderInterface $order): OrderInterface {
       $transaction_key = 'mappconnect_transaction_'.$order->getId();
+
+      if ($order->getState() != \Magento\Sales\Model\Order::STATE_NEW)
+          return $order;
+
       if ($this->_helper->getConfigValue('export', 'transaction_enable') && ($this->storage->getData($transaction_key) != true)) {
           $data = $order->getData();
           $data['items'] = array();
