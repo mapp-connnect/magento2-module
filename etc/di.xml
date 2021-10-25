@@ -8,6 +8,10 @@
       <plugin name="MappConnectNewsletterSubscriber" type="Mapp\Connect\Plugin\SubscriberPlugin"/>
   </type>
 
+  <type name="Magento\Newsletter\Model\SubscriptionManager">
+      <plugin name="MappConnectNewsletterSubscriptionManager" type="Mapp\Connect\Plugin\SubscriptionManagerPlugin"/>
+  </type>
+
   <type name="Magento\Sales\Api\OrderRepositoryInterface">
       <plugin name="MappConnectOrderRepositoryInterface" type="Mapp\Connect\Plugin\Sales\Api\OrderRepositoryInterfacePlugin"/>
   </type>
