@@ -6,19 +6,19 @@ class Authentication extends \Magento\Framework\App\Config\Value {
 
     const CONFIG_PREFIX = 'mappconnect';
 
-    protected $_configValueFactory;
+    protected $_configResource;
 
     public function __construct(
             \Magento\Framework\Model\Context $context,
             \Magento\Framework\Registry $registry,
             \Magento\Framework\App\Config\ScopeConfigInterface $config,
             \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
-            \Magento\Framework\App\Config\ValueFactory $configValueFactory,
+            \Magento\Framework\App\Config\ConfigResource\ConfigInterface $configResource,
             \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
             \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
             array $data = []
     ) {
-        $this->_configValueFactory = $configValueFactory;
+        $this->_configResource = $configResource;
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
     }
 
@@ -52,11 +52,11 @@ class Authentication extends \Magento\Framework\App\Config\Value {
             //var_dump($resp); die();
 
             if (!is_null($resp['customersGroupId']))
-                $this->saveConfigValue(self::CONFIG_PREFIX . "/group/customers", $resp['customersGroupId']);
+                $this->configResource->saveConfig(self::CONFIG_PREFIX . '/group/customers', $resp['customersGroupId'], $this->getScope(), $this->getScopeId());
             if (!is_null($resp['subscribersGroupId']))
-                $this->saveConfigValue(self::CONFIG_PREFIX . "/group/subscribers", $resp['subscribersGroupId']);
+                $this->configResource->saveConfig(self::CONFIG_PREFIX . '/group/subscribers', $resp['subscribersGroupId'], $this->getScope(), $this->getScopeId());
             if (!is_null($resp['guestsGroupId']))
-                $this->saveConfigValue(self::CONFIG_PREFIX . "/group/guests", $resp['guestsGroupId']);
+                $this->configResource->saveConfig(self::CONFIG_PREFIX . '/group/guests', $resp['guestsGroupId'], $this->getScope(), $this->getScopeId());
 
         }
         parent::beforeSave();
@@ -71,10 +71,4 @@ class Authentication extends \Magento\Framework\App\Config\Value {
            $this->getScopeCode()
         );
     }
-
-    private function saveConfigValue($path, $value) {
-        $this->_configValueFactory->create()->load($path,'path')->setValue($value)->setPath($path)->save();
-    }
-
-
 }
