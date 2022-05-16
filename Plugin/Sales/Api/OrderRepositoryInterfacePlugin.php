@@ -111,6 +111,29 @@ class OrderRepositoryInterfacePlugin {
           } catch(\Exception $e) {
             $this->logger->error('MappConnect: cannot sync transaction event', ['exception' => $e]);
           }
+      } else if ($this->_helper->getConfigValue('export', 'customer_enable')) {
+          $data = $order->getData();
+          if (isset($data['customer_is_guest']) && $data['customer_is_guest']) {
+            $data = [
+                'dob' => $order->getCustomerDob(),
+                'email' => $order->getCustomerEmail(),
+                'firstname' => $order->getCustomerFirstname (),
+                'gender' => $order->getCustomerGender(),
+                'lastname' => $order->getCustomerLastname(),
+                'middlename' => $order->getCustomerMiddlename(),
+                'note' => $order->getCustomerNote()
+            ];
+
+            $data['group'] = $this->_helper->getConfigValue('group', 'guests');
+            try {
+              if ($mc = $this->_helper->getMappConnectClient()) {
+                $this->logger->debug('MappConnect: sending guest customer', ['data' => $data]);
+                $mc->event('user', $data);
+              }
+            } catch(\Exception $e) {
+              $this->logger->error('MappConnect: cannot sync guest customer', ['exception' => $e]);
+            }
+          }
       }
       return $order;
   }
