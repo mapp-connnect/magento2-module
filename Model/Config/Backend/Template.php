@@ -2,48 +2,52 @@
 
 namespace Mapp\Connect\Model\Config\Backend;
 
-class Template implements \Magento\Framework\Option\ArrayInterface {
+use \Mapp\Connect\Helper\Data;
+use \Magento\Framework\Message\ManagerInterface;
 
-  protected $_helper;
-  protected $_messageManager;
+class Template implements \Magento\Framework\Option\ArrayInterface
+{
 
-  public function __construct(
-     	\Mapp\Connect\Helper\Data  	$helper,
-      \Magento\Framework\Message\ManagerInterface $messageManager
-  ) {
-    $this->_helper = $helper;
-    $this->_messageManager = $messageManager;
-  }
+    protected $_helper;
+    protected $_messageManager;
 
-  private static $cache = null;
-
-  private function getMessages() {
-    if (!is_null(self::$cache)) {
-      return self::$cache;
+    public function __construct(
+        Data $helper,
+        ManagerInterface $messageManager
+    ) {
+        $this->_helper = $helper;
+        $this->_messageManager = $messageManager;
     }
-    try {
-      if ($mc = $this->_helper->getMappConnectClient()) {
-        self::$cache = $mc->getMessages();
-      } else {
-        return array();
-      }
-    } catch (\Exception $e) {
-      $this->_messageManager->addExceptionMessage($e);
-      self::$cache = array();
+
+    private static $cache = null;
+
+    private function getMessages()
+    {
+        if (self::$cache != null) {
+            return self::$cache;
+        }
+        try {
+            if ($mc = $this->_helper->getMappConnectClient()) {
+                self::$cache = $mc->getMessages();
+            } else {
+                return [];
+            }
+        } catch (\Exception $e) {
+            $this->_messageManager->addExceptionMessage($e);
+            self::$cache = [];
+        }
+        return self::$cache;
     }
-    return self::$cache;
-  }
 
-
-  public function toOptionArray() {
-    $ret = array(array(
-      'value' => 0,
-      'label' => __('Magento Default')
-    ));
-    foreach ($this->getMessages() as $value => $label) {
-      array_push($ret, array('value' => $value, 'label' => $label));
+    public function toOptionArray()
+    {
+        $ret = [[
+        'value' => 0,
+        'label' => __('Magento Default')
+        ]];
+        foreach ($this->getMessages() as $value => $label) {
+            array_push($ret, ['value' => $value, 'label' => $label]);
+        }
+        return $ret;
     }
-    return $ret;
-  }
-
 }
