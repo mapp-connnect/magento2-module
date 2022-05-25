@@ -2,6 +2,7 @@
     "name": "mappconnect/magento2-module",
     "description": "Mapp Connect integration for Magento 2",
     "require": {
+        "php": "~7.0 || ~8.0.0 || ~8.1.0",
         "firebase/php-jwt": "^5.0",
         "mappconnect/client": "^0.1"
     },
