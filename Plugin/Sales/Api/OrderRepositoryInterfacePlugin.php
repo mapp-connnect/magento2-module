@@ -84,8 +84,10 @@ class OrderRepositoryInterfacePlugin
                 $data['items'][] = $item_data;
             }
 
-            $data['billingAddress'] = $order->getBillingAddress()->getData();
-            $data['shippingAddress'] = $order->getShippingAddress()->getData();
+            if ($billingAddress = $order->getBillingAddress())
+                $data['billingAddress'] = $billingAddress->getData();
+            if ($shippingAddress = $order->getShippingAddress())
+                $data['shippingAddress'] = $shippingAddress->getData();
 
             $renderer = $this->addressConfig->getFormatByCode('html')->getRenderer();
 
