@@ -48,8 +48,15 @@ class Authentication extends \Magento\Framework\App\Config\Value
                 $this->getConfigValue('integration', 'integration_secret')
             );
 
-            if (!$mc->ping()) {
+            try {
+              if (!$mc->ping()) {
                 throw new ValidatorException(__('Authentication failed.'));
+              }
+            } catch(\GuzzleHttp\Exception\ServerException $e) {
+              if ($data = json_decode($e->getResponse()->getBody(), true)) {
+                throw new ValidatorException(__($data['message']));
+              }
+              throw new ValidatorException(__($e->getResponse()->getBody()));
             }
 
             $objectManager = ObjectManager::getInstance();
@@ -58,18 +65,25 @@ class Authentication extends \Magento\Framework\App\Config\Value
                 $this->getScope() ?: ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->getScopeCode()
             );
+            $magentourl = preg_replace("(^https?://)", "", $magentourl );
+            $magentourl = preg_replace("/[^A-Za-z0-9._]/", "", $magentourl );
             $version = $objectManager->get(\Magento\Framework\App\ProductMetadataInterface::class)->getVersion();
-            $resp = $mc->connect([
-              'params' => [
-                'magentourl' => $magentourl,
-                'magentoversion' => $version,
-                'magentoname' => ($this->getScope() ?: ScopeConfigInterface::SCOPE_TYPE_DEFAULT) .
-                  ($this->getScopeCode() ? "|" .$this->getScopeCode() : ""),
-                'website' => $magentourl
-              ]
-            ]);
-
-            //var_dump($resp); die();
+            try {
+              $resp = $mc->connect([
+                'params' => [
+                  'magentourl' => $magentourl,
+                  'magentoversion' => $version,
+                  'magentoname' => ($this->getScope() ?: ScopeConfigInterface::SCOPE_TYPE_DEFAULT) .
+                    ($this->getScopeCode() ? "|" .$this->getScopeCode() : ""),
+                  'website' => $magentourl
+                ]
+              ]);
+            } catch(\GuzzleHttp\Exception\ServerException $e) {
+              if ($data = json_decode($e->getResponse()->getBody(), true)) {
+                throw new ValidatorException(__($data['message']));
+              }
+              throw new ValidatorException(__($e->getResponse()->getBody()));
+            }
 
             if ($resp['customersGroupId'] !== null) {
                 $this->_configResource->saveConfig(
