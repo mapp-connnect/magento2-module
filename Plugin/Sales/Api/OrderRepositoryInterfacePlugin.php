@@ -61,8 +61,18 @@ class OrderRepositoryInterfacePlugin
     {
         $transaction_key = 'mappconnect_transaction_'.$order->getId();
 
-        if ($order->getState() != \Magento\Sales\Model\Order::STATE_NEW) {
+        if ($sendonstatus = $this->_helper->getConfigValue('export', 'transaction_send_on_status')) {
+          if (!$order->dataHasChangedFor(OrderInterface::STATUS)) {
             return $order;
+          }
+          if ($order->getStatus() != $sendonstatus) {
+            return $order;
+          }
+        } else {
+          //backward compatibility if config is not set
+          if ($order->getState() != \Magento\Sales\Model\Order::STATE_NEW) {
+            return $order;
+          }
         }
 
         if ($this->_helper->getConfigValue('export', 'transaction_enable')
