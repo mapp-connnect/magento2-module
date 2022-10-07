@@ -75,7 +75,7 @@ class SubscriptionManagerPlugin
         if (!$result) {
             return $result;
         }
-        $this->logger->debug('MappConnect: Subscribe unsubscribe');
+        $this->logger->debug('MappConnect: SubscribeManager subscribe');
         $customer = $this->customerRepository->getById($customerId);
         $email = $customer->getEmail();
         try {
@@ -92,7 +92,7 @@ class SubscriptionManagerPlugin
                 $mappconnect->event('newsletter', $data);
             }
         } catch (\Exception $e) {
-            $this->logger->error('MappConnect: cannot sync unsubscribe event', ['exception' => $e]);
+            $this->logger->error('MappConnect: cannot sync subscribe event', ['exception' => $e]);
         }
         return $result;
     }
@@ -102,7 +102,7 @@ class SubscriptionManagerPlugin
         if (!$result) {
             return $result;
         }
-        $this->logger->debug('MappConnect: Subscribe unsubscribe');
+        $this->logger->debug('MappConnect: SubscribeManager unsubscribe');
         $customer = $this->customerRepository->getById($customerId);
         $email = $customer->getEmail();
         try {

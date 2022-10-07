@@ -24,7 +24,7 @@ class SubscriberPlugin
             return $result;
         }
         $email = $subject->getEmail();
-        $this->logger->debug('MappConnect: Subscribe subscribe');
+        $this->logger->debug('MappConnect: Subscribe subscribe called');
         try {
             if (($mappconnect = $this->_helper->getMappConnectClient())
             && $this->_helper->getConfigValue('export', 'newsletter_enable')) {
@@ -49,7 +49,7 @@ class SubscriberPlugin
         if (!($result->isStatusChanged())) {
             return $result;
         }
-        $this->logger->debug('MappConnect: Subscribe unsubscribe');
+        $this->logger->debug('MappConnect: Subscribe unsubscribe called');
         $email = $subject->getEmail();
         try {
             if (($mappconnect = $this->_helper->getMappConnectClient())
@@ -74,7 +74,7 @@ class SubscriberPlugin
         if (!($result->isStatusChanged())) {
             return $result;
         }
-        $this->logger->debug('MappConnect: Subscribe subscribe by customerid');
+        $this->logger->debug('MappConnect: Subscribe subscribe by customerid called');
         $email = $subject->getEmail();
         try {
             if (($mappconnect = $this->_helper->getMappConnectClient())
@@ -102,7 +102,7 @@ class SubscriberPlugin
             return $result;
         }
 
-        $this->logger->debug('MappConnect: Subscribe unsubscribe by customerid');
+        $this->logger->debug('MappConnect: Subscribe unsubscribe by customerid called');
         $email = $subject->getEmail();
         try {
             if (($mappconnect = $this->_helper->getMappConnectClient())
