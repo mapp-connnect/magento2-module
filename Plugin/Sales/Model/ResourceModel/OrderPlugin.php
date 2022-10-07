@@ -1,13 +1,13 @@
 <?php
 
-namespace Mapp\Connect\Plugin\Sales\Api;
+namespace Mapp\Connect\Plugin\Sales\Model\ResourceModel;
 
 use Magento\Sales\Api\Data\OrderInterface;
-use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\ResourceModel\Order;
+use Magento\Sales\Model\ResourceModel\Order\Interceptor;
 
-class OrderRepositoryInterfacePlugin
+class OrderPlugin
 {
-
     protected $scopeConfig;
     protected $_helper;
     protected $productHelper;
@@ -17,7 +17,7 @@ class OrderRepositoryInterfacePlugin
 
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Mapp\Connect\Helper\Data      $helper,
+        \Mapp\Connect\Helper\Data $helper,
         \Magento\Catalog\Helper\Product $productHelper,
         \Magento\Customer\Model\Address\Config $addressConfig,
         \Magento\Payment\Helper\Data $paymentHelper,
@@ -57,7 +57,7 @@ class OrderRepositoryInterfacePlugin
         return implode(', ', $ret);
     }
 
-    public function afterSave(OrderRepositoryInterface $subject, OrderInterface $order): OrderInterface
+    public function afterSave(Order $subject, Interceptor $interceptor, OrderInterface $order): OrderInterface
     {
         $transaction_key = 'mappconnect_transaction_'.$order->getId();
 
@@ -134,13 +134,13 @@ class OrderRepositoryInterfacePlugin
             $data = $order->getData();
             if (isset($data['customer_is_guest']) && $data['customer_is_guest']) {
                 $data = [
-                'dob' => $order->getCustomerDob(),
-                'email' => $order->getCustomerEmail(),
-                'firstname' => $order->getCustomerFirstname(),
-                'gender' => $order->getCustomerGender(),
-                'lastname' => $order->getCustomerLastname(),
-                'middlename' => $order->getCustomerMiddlename(),
-                'note' => $order->getCustomerNote()
+                    'dob' => $order->getCustomerDob(),
+                    'email' => $order->getCustomerEmail(),
+                    'firstname' => $order->getCustomerFirstname(),
+                    'gender' => $order->getCustomerGender(),
+                    'lastname' => $order->getCustomerLastname(),
+                    'middlename' => $order->getCustomerMiddlename(),
+                    'note' => $order->getCustomerNote()
                 ];
 
                 $data['group'] = $this->_helper->getConfigValue('group', 'guests');

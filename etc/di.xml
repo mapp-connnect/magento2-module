@@ -12,8 +12,8 @@
       <plugin name="MappConnectNewsletterSubscriptionManager" type="Mapp\Connect\Plugin\SubscriptionManagerPlugin"/>
   </type>
 
-  <type name="Magento\Sales\Api\OrderRepositoryInterface">
-      <plugin name="MappConnectOrderRepositoryInterface" type="Mapp\Connect\Plugin\Sales\Api\OrderRepositoryInterfacePlugin"/>
+  <type name="Magento\Sales\Model\ResourceModel\Order">
+      <plugin name="MappConnectOrder" type="Mapp\Connect\Plugin\Sales\Model\ResourceModel\OrderPlugin"/>
   </type>
 
 </config>
