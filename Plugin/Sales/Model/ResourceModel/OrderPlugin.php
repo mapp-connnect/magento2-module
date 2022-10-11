@@ -75,6 +75,8 @@ class OrderPlugin
           }
         }
 
+        $this->logger->debug('MappConnect: Order plugin called');
+
         if ($this->_helper->getConfigValue('export', 'transaction_enable')
           && ($this->storage->getData($transaction_key) != true)) {
             $data = $order->getData();
